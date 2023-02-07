@@ -3,7 +3,7 @@ counter= []
 for i in range(10):
     num = int(input())
     list.append(num)
-sorted(list)
+list = sorted(list, reverse= True)
 def prime(n):
     if n > 1:
         for i in range(2,n):
@@ -13,8 +13,8 @@ def prime(n):
             return True
     else:
         return False
-def magaval(handel):
-    global counter , c
+def magavall(handel,z):
+    global counter
     c = 0
     for i in range(handel + 1):
         try:
@@ -23,9 +23,16 @@ def magaval(handel):
             d = None
         if d == 0 and prime(i) == True :
             c += 1
-    counter.append(c)
+    if z == 0 :
+        counter.append(c)
+    else:
+        return c
 for l in list:
-    magaval(l)
-    if l == list.index(max(list)) and list.index(l) != counter.index(max(counter)):
-        list[list.index(max(list))] = -1
-print('%i %i'%(max(list),max(counter)))
+    magavall(l,0)
+for k in list:
+    if magavall(k,1) == max(counter):
+        if k == max(list):
+            print("%i %i" %(k,max(counter)))
+            break
+    else:
+        list[list.index(k)] = -1
