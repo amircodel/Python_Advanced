@@ -10,9 +10,6 @@ def intcon(handel):
     except:
         return 'na'
 for i in l:
-    if len(i) == 0:
-        l.remove(i)
-for i in l:
     for j in i.split():
         c.append(j)
         if i.split().index(j) == 0:
