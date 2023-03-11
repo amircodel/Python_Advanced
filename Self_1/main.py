@@ -13,13 +13,42 @@ def choice_file():
     tkinter.Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
     filename = askopenfilename(filetypes=[("Excel files", "*.xlsx; *.xls")]) # show an "Open" dialog box and return the path to the selected file
     lab2.config(text = "بر روی انجام عملیات کلیک کنید")
+# do
 def do_file():
-    global FNFE
+    class Headererror(Exception):
+        pass
     try:
-        with open(filename, "w") as file:
-            pass
+        df = pd.read_excel(filename)
+        def meli(c):
+            o = str(c)
+            if len(o) < 10:
+                while len(o) <  10:
+                    o = '0' + o
+            return o
+        code_col = []
+        for col in df.columns:
+            if re.search(r'کد ملی', col) or re.search(r'کدملی', col):
+                code_col.append(col)
+        for header in code_col:
+            lstcode = []
+            lstcode.extend((df[header].values[:]))
+            for code in lstcode:
+                df[header] = df[header].replace([code], meli(code))
+        code_meli= pd.DataFrame(df, columns=code_col)
+        if code_col == []:
+            raise Headererror
+        try:
+            with pd.ExcelWriter(filename, mode="a") as writer:
+                code_meli.to_excel(writer, index=False, sheet_name='کد ملی های اصلاح شده')
+                lab2.config(text = "!عملیات با موفقیت انجام شد")
+        except ValueError:
+            lab2.config(text = "!این فایل قبلا بررسی شده است")
     except FileNotFoundError:
-        FNFE = lambda: lab2.config(text = "!شما هیچ فایلی را انتخاب نکرده اید")
+        lab2.config(text = "!شما هیچ فایلی را انتخاب نکرده اید")
+    except PermissionError:
+        lab2.config(text = "!برای انجام عملیات فایل را ببندید")
+    except Headererror:
+        lab2.config(text = "!سطر اول این فایل حاوی عنوان است")
 # App Header
 lab1 = Label( gui, text ="برنامه تصحیح کدملی", relief=FLAT, width=300, pady=15, font=('B Zar Bold',13))
 lab1.pack()
@@ -27,7 +56,7 @@ lab1.pack()
 B = tkinter.Button(gui, text ="انتخاب فایل",font=('B Zar',13),width=20,command=choice_file)
 B.pack()
 # Do it btn
-C = tkinter.Button(gui, text ="انجام عملیات",font=('B Zar',13),width=20,command=lambda: [do_file(), FNFE()])
+C = tkinter.Button(gui, text ="انجام عملیات",font=('B Zar',13),width=20,command=lambda: [do_file()])
 C.pack(pady=10)
 # Description of the situation(2 choices)
 lab2 = Label( gui,text = "یک فایل به فرمت اکسل انتخاب کنید", relief=FLAT, font=('B Zar',13),pady=-10)
