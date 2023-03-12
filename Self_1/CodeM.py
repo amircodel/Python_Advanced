@@ -5,7 +5,7 @@ from tkinter.filedialog import askopenfilename
 import re
 import math
 gui = Tk()
-gui.title("Ver 1.0 (Beta)")
+gui.title("CodeM Ver 1.0 (Beta)")
 # Unresizeble The Window
 gui.resizable(0,0)
 # fun choice file
