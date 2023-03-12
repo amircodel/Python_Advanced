@@ -3,6 +3,7 @@ import pandas as pd
 from tkinter import *
 from tkinter.filedialog import askopenfilename
 import re
+import math
 gui = Tk()
 gui.title("Ver 1.0 (Beta)")
 # Unresizeble The Window
@@ -20,7 +21,7 @@ def do_file():
     try:
         df = pd.read_excel(filename)
         def meli(c):
-            o = str(c)
+            o = str(int(c))
             if len(o) < 10:
                 while len(o) <  10:
                     o = '0' + o
@@ -30,19 +31,21 @@ def do_file():
             if re.search(r'کد ملی', col) or re.search(r'کدملی', col):
                 code_col.append(col)
         for header in code_col:
-            lstcode = []
-            lstcode.extend((df[header].values[:]))
-            for code in lstcode:
-                df[header] = df[header].replace([code], meli(code))
+            for header in code_col:
+                lstcode = []
+                lstcode.extend((df[header].values[:]))
+                lstcode = filter(lambda i : True if not math.isnan(float(i)) else False, lstcode)
+                lstcode = list(lstcode)
+                for code in lstcode:
+                    df[header] = df[header].replace(code, meli(code))
         code_meli= pd.DataFrame(df, columns=code_col)
         if code_col == []:
             raise Headererror
-        try:
-            with pd.ExcelWriter(filename, mode="a") as writer:
-                code_meli.to_excel(writer, index=False, sheet_name='کد ملی های اصلاح شده')
-                lab2.config(text = "!عملیات با موفقیت انجام شد")
-        except ValueError:
-            lab2.config(text = "!این فایل قبلا بررسی شده است")
+        with pd.ExcelWriter(filename, mode="a") as writer:
+            code_meli.to_excel(writer, index=False, sheet_name='کد ملی های اصلاح شده')
+            lab2.config(text = "!عملیات با موفقیت انجام شد")
+    except ValueError:
+        lab2.config(text = "!این فایل قبلا بررسی شده است")
     except FileNotFoundError:
         lab2.config(text = "!شما هیچ فایلی را انتخاب نکرده اید")
     except PermissionError:
