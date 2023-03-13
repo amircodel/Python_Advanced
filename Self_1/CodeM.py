@@ -25,19 +25,21 @@ def do_file():
             if len(o) < 10:
                 while len(o) <  10:
                     o = '0' + o
+            if len(o) > 10:
+                return "!نامعتبر"
             return o
         code_col = []
         for col in df.columns:
             if re.search(r'کد ملی', col) or re.search(r'کدملی', col):
                 code_col.append(col)
+
         for header in code_col:
-            for header in code_col:
-                lstcode = []
-                lstcode.extend((df[header].values[:]))
-                lstcode = filter(lambda i : True if not math.isnan(float(i)) else False, lstcode)
-                lstcode = list(lstcode)
-                for code in lstcode:
-                    df[header] = df[header].replace(code, meli(code))
+            lstcode = []
+            lstcode.extend((df[header].values[:]))
+            lstcode = filter(lambda i : True if not math.isnan(float(i)) else False, lstcode)
+            lstcode = list(lstcode)
+            for code in lstcode:
+                df[header] = df[header].replace(code, meli(code))
         code_meli= pd.DataFrame(df, columns=code_col)
         if code_col == []:
             raise Headererror
@@ -52,6 +54,8 @@ def do_file():
         lab2.config(text = "!برای انجام عملیات فایل را ببندید")
     except Headererror:
         lab2.config(text = "!سطر اول این فایل حاوی عنوان است")
+    except:
+        lab2.config(text = "در صورت بروز خطا با برنامه نویس تماس بگیرید")
 # App Header
 lab1 = Label( gui, text ="برنامه تصحیح کدملی", relief=FLAT, width=300, pady=15, font=('B Zar Bold',13))
 lab1.pack()
