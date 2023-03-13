@@ -25,6 +25,8 @@ def do_file():
             if len(o) < 10:
                 while len(o) <  10:
                     o = '0' + o
+            elif len(o) > 10:
+                return "!نامعتبر"
             return o
         code_col = []
         for col in df.columns:
