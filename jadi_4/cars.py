@@ -30,7 +30,7 @@ for i in cars:
     price = re.sub(r'\[\'[Price,price]+\s\$|\,*|\'\]', '', str(re.findall(r'[Price,price]+\s\$\d+\,\d+\,*\d*\,*\d*', i.get_text(separator=" "))))
     res.append(int(price))
     # get and insert car des. in res
-    des = re.sub(r'\[\'|\s|\,|miles\'\]', '', str(re.findall(r'\s\d+\,\d+\s+miles', i.get_text(separator=" "))))
+    des = re.sub(r'\[\'|\s|\,|miles\'\]', '', str(re.findall(r'\s\d+\,*\d*\s+miles', i.get_text(separator=" "))))
     res.append(int(des))
     total.append(tuple(res))
     #   END
