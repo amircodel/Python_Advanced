@@ -57,5 +57,5 @@ for lnk in urls:
     outp = soup.find_all('div',attrs={'class':'text-infmlk col-6'})
     ex = [i.text for i in outp]
     if len(ex) == 11:
-        ex.pop(9)
+        ex.pop(1)
     print(ex)
