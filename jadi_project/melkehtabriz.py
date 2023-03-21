@@ -17,11 +17,7 @@ SCROLL_PAUSE_TIME = 2
 # Get scroll height
 last_height = driver.execute_script("return document.body.scrollHeight")
 
-# If you want to limit the number of scroll loads, add a limit here
-scroll_limit = 1
-
-count = 0
-while True and count < scroll_limit:
+while True:
     # Scroll down to bottom
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
@@ -33,8 +29,7 @@ while True and count < scroll_limit:
     if new_height == last_height:
         break
     last_height = new_height
-    count += 1
-
+    
 sleep(2) 
 
 html = driver.page_source
@@ -53,9 +48,28 @@ for lnk in urls:
     del soup
     data = []
     soup = BeautifulSoup(requests.get(lnk).text,'html.parser')
-    data.append(re.findall(r'\d+',lnk))
-    outp = soup.find_all('div',attrs={'class':'text-infmlk col-6'})
-    ex = [i.text for i in outp]
-    if len(ex) == 11:
-        ex.pop(1)
-    print(ex)
+    # data.extend(re.findall(r'\d+',lnk))
+    ex = soup.find_all('div',attrs={'class':'text-infmlk'})
+    data.extend([i.text for i in ex])
+    if len(ex) == 13:
+        data.pop(2)
+    # Code of notice data[0]
+    # Area data[1]
+    # Meterage data[2]
+    data[2] = float(data[2])
+    # Pricing data[3] & per meter data[4]
+    data[3] = int(''.join(re.findall(r'\d+',data[3])))
+    data.insert(4,int(data[3]//data[2]))
+    # Homes per one floor data[5]
+    # Rooms
+    data[6] = int(data[6])
+    # Total floors
+    data[7] = int(data[7])
+    # floor of the home
+    data[8] = int(data[8])
+    # Buliding year
+    data[9] = int(re.findall(r'\d+',data[9])[0])
+    # Situation data[10]
+    # Type of building data[11]
+    # type of documentry data[12]
+    print(data,len(data))
