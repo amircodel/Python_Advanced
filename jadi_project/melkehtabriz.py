@@ -86,7 +86,7 @@ for lnk in urls:
     # Situation data[10]
     # Type of building data[11]
     # type of documentry data[12]
-    main.extend(tuple(data))
+    main.append(tuple(data))
 stmt = "SHOW TABLES LIKE 'melkehtabriz'"
 cursor.execute(stmt)
 isthere = cursor.fetchone()
@@ -95,6 +95,7 @@ if not isthere:
     cursor.execute(sql01)
 for home in main:
     sql02 = f"SELECT * FROM melkehtabriz WHERE Code LIKE {home[0]}"
+    print(sql02)
     cursor.execute(sql02)
     if cursor.fetchone():
         cursor.execute(f"DELETE FROM melkehtabriz WHERE Code LIKE {home[0]}")
