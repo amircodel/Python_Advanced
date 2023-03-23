@@ -3,6 +3,14 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import requests
 import re
+import mysql.connector
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="",
+  database="python"
+)
+cursor = mydb.cursor()
 # Headless/incognito Chrome driver  
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--incognito")
@@ -17,7 +25,11 @@ SCROLL_PAUSE_TIME = 2
 # Get scroll height
 last_height = driver.execute_script("return document.body.scrollHeight")
 
-while True:
+# limition
+limit = 5
+count = 0
+
+while True and count <= limit:
     # Scroll down to bottom
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
@@ -29,7 +41,7 @@ while True:
     if new_height == last_height:
         break
     last_height = new_height
-    
+    count += 1
 sleep(2) 
 
 html = driver.page_source
@@ -43,6 +55,7 @@ for code in homes:
     c = homes[homes.index(code)]
     c = c.strip('کد: ')
     urls.append('https://melketabriz.com/p/%s'%c)
+del home
 main = []
 for lnk in urls:
     del soup
@@ -57,7 +70,7 @@ for lnk in urls:
     # Area data[1]
     # Meterage data[2]
     data[2] = float(data[2])
-    # Pricing data[3] & per meter data[4]
+    # Pricing data[3] & permeter data[4]
     data[3] = int(''.join(re.findall(r'\d+',data[3])))
     data.insert(4,int(data[3]//data[2]))
     # Homes per one floor data[5]
@@ -72,4 +85,17 @@ for lnk in urls:
     # Situation data[10]
     # Type of building data[11]
     # type of documentry data[12]
-    print(data,len(data))
+    main.extend(tuple(data))
+stmt = "SHOW TABLES LIKE 'melkehtabriz'"
+cursor.execute(stmt)
+isthere = cursor.fetchone()
+if not isthere:
+    sql01 = "CREATE TABLE melkehtabriz (Code VARCHAR(255), Area VARCHAR(255), Meterage FLOAT(), Pricing INT, PPM INT, HPF VARCHAR(255), Rooms INT, Allfloors INT, Floor INT, old INT, Situation VARCHAR(255), TypeBuilding VARCHAR(255), TypeDocumentry VARCHAR(255));"
+    cursor.execute(sql01)
+for home in main:
+    sql02 = f"SELECT * FROM melkehtabriz WHERE Code LIKE {home[0]}"
+    cursor.execute(sql02)
+    if cursor.fetchone():
+        cursor.execute(f"DELETE FROM melkehtabriz WHERE Code LIKE {home[0]}")
+        cursor.execute("INSERT INTO melkehtabriz (Code, Area, Meterage, Pricing, PPM, HPF, Rooms, Allfloors, Floor, old, Situation, TypeBuilding, TypeDocumentry) VALUES (%s, %s, %f, %i, %i, %s, %i, %i, %i, %i, %s, %s, %s)",home)
+mydb.commit()

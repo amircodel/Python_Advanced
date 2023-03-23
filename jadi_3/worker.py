@@ -4,7 +4,7 @@ mydb = mysql.connector.connect(
   host="localhost",
   user="root",
   password="",
-  database="test2"
+  database="python"
 )
 cursor = mydb.cursor()
 cursor.execute("SELECT * FROM worker")
