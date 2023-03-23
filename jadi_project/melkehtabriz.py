@@ -94,9 +94,9 @@ if not isthere:
     sql01 = "CREATE TABLE melkehtabriz (Code VARCHAR(255), Area VARCHAR(255), Meterage FLOAT, Pricing INT, PPM INT, HPF VARCHAR(255), Rooms INT, Allfloors INT, Floor INT, old INT, Situation VARCHAR(255), TypeBuilding VARCHAR(255), TypeDocumentry VARCHAR(255));"
     cursor.execute(sql01)
 for home in main:
-    sql02 = f"SELECT * FROM melkehtabriz WHERE Code LIKE '{home[0]}'"
+    sql02 = f"SELECT * FROM melkehtabriz WHERE Code LIKE '{home[0]}';"
     cursor.execute(sql02)
     if cursor.fetchone():
-        cursor.execute(f"DELETE FROM melkehtabriz WHERE Code LIKE '{home[0]}'")
-    cursor.execute("INSERT INTO melkehtabriz (Code, Area, Meterage, Pricing, PPM, HPF, Rooms, Allfloors, Floor, old, Situation, TypeBuilding, TypeDocumentry) VALUES (%s, %s, %f, %i, %i, %s, %i, %i, %i, %i, %s, %s, %s)"% home)
+        cursor.execute(f"DELETE FROM melkehtabriz WHERE Code LIKE '{home[0]}';")
+    cursor.execute("INSERT INTO melkehtabriz (Code, Area, Meterage, Pricing, PPM, HPF, Rooms, Allfloors, Floor, old, Situation, TypeBuilding, TypeDocumentry) VALUES (%s, %s, %f, %i, %i, %s, %i, %i, %i, %i, %s, %s, %s);" %home)
 mydb.commit()
