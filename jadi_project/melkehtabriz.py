@@ -25,11 +25,11 @@ SCROLL_PAUSE_TIME = 2
 # Get scroll height
 last_height = driver.execute_script("return document.body.scrollHeight")
 
-# limition
-limit = 5
-count = 0
+# If you want to limit the number of scroll loads, add a limit here
+scroll_limit = 2
 
-while True and count <= limit:
+count = 0
+while True and count < scroll_limit:
     # Scroll down to bottom
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
@@ -42,6 +42,7 @@ while True and count <= limit:
         break
     last_height = new_height
     count += 1
+
 sleep(2) 
 
 html = driver.page_source
@@ -90,12 +91,12 @@ stmt = "SHOW TABLES LIKE 'melkehtabriz'"
 cursor.execute(stmt)
 isthere = cursor.fetchone()
 if not isthere:
-    sql01 = "CREATE TABLE melkehtabriz (Code VARCHAR(255), Area VARCHAR(255), Meterage FLOAT(), Pricing INT, PPM INT, HPF VARCHAR(255), Rooms INT, Allfloors INT, Floor INT, old INT, Situation VARCHAR(255), TypeBuilding VARCHAR(255), TypeDocumentry VARCHAR(255));"
+    sql01 = "CREATE TABLE melkehtabriz (Code VARCHAR(255), Area VARCHAR(255), Meterage FLOAT, Pricing INT, PPM INT, HPF VARCHAR(255), Rooms INT, Allfloors INT, Floor INT, old INT, Situation VARCHAR(255), TypeBuilding VARCHAR(255), TypeDocumentry VARCHAR(255));"
     cursor.execute(sql01)
 for home in main:
     sql02 = f"SELECT * FROM melkehtabriz WHERE Code LIKE {home[0]}"
     cursor.execute(sql02)
     if cursor.fetchone():
         cursor.execute(f"DELETE FROM melkehtabriz WHERE Code LIKE {home[0]}")
-        cursor.execute("INSERT INTO melkehtabriz (Code, Area, Meterage, Pricing, PPM, HPF, Rooms, Allfloors, Floor, old, Situation, TypeBuilding, TypeDocumentry) VALUES (%s, %s, %f, %i, %i, %s, %i, %i, %i, %i, %s, %s, %s)",home)
+        cursor.execute("INSERT INTO melkehtabriz (Code, Area, Meterage, Pricing, PPM, HPF, Rooms, Allfloors, Floor, old, Situation, TypeBuilding, TypeDocumentry) VALUES (%s, %s, %f, %i, %i, %s, %i, %i, %i, %i, %s, %s, %s)"% home)
 mydb.commit()
