@@ -38,8 +38,8 @@ stmt = "SHOW TABLES LIKE 'cars'"
 cursor.execute(stmt)
 isthere = cursor.fetchone()
 if not isthere:
-    sql01 = "CREATE TABLE cars (Model varchar(255), Price int, Miles int);"
+    sql01 = "CREATE TABLE cars (Model VARCHAR(255), Price INT, Miles INT);"
     cursor.execute(sql01)
 for car in total:
-    cursor.execute("INSERT INTO cars (Model, Price, Miles) VALUES (%s, %s, %s)",car)
+    cursor.execute(f"INSERT INTO cars (Model, Price, Miles) VALUES {car}")
 mydb.commit()
