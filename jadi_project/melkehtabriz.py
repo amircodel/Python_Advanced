@@ -90,7 +90,7 @@ stmt = "SHOW TABLES LIKE 'melkehtabriz'"
 cursor.execute(stmt)
 isthere = cursor.fetchone()
 if not isthere:
-    sql01 = "CREATE TABLE melkehtabriz (Code VARCHAR(255), Area VARCHAR(255), Meterage FLOAT, Pricing INT, PPM INT, Floor VARCHAR(255), Rooms INT, Allfloors INT, HPF INT, old INT, Situation VARCHAR(255), TypeBuilding VARCHAR(255), TypeDocumentry VARCHAR(255));"
+    sql01 = "CREATE TABLE melkehtabriz (Code VARCHAR(255), Area VARCHAR(255), Meterage FLOAT, Pricing BIGINT, PPM INT, Floor VARCHAR(255), Rooms INT, Allfloors INT, HPF INT, old INT, Situation VARCHAR(255), TypeBuilding VARCHAR(255), TypeDocumentry VARCHAR(255));"
     cursor.execute(sql01)
 for home in main:
     sql02 = f"SELECT * FROM melkehtabriz WHERE Code LIKE '{home[0]}';"
