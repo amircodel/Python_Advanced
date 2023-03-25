@@ -1,5 +1,3 @@
-from time import sleep
-from selenium import webdriver
 from bs4 import BeautifulSoup
 import requests
 import re
@@ -11,55 +9,16 @@ mydb = mysql.connector.connect(
   database="python"
 )
 cursor = mydb.cursor()
-# Headless/incognito Chrome driver  
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument("--incognito")
-chrome_options.add_argument('headless')
-driver = webdriver.Chrome(executable_path='CHROMEDRIVER_PATH',chrome_options=chrome_options)
-
-driver.get('https://melketabriz.com/search?status_sell=614ed62da50555f0a54c1eca&status_property=614edc35a50555f0a54c1f12&category_property=614ee704a50555f0a54c227d&#!')
-
-# Set sleep time for the page to load on scroll
-SCROLL_PAUSE_TIME = 2
-
-# Get scroll height
-last_height = driver.execute_script("return document.body.scrollHeight")
-
-# If you want to limit the number of scroll loads, add a limit here
-scroll_limit = 30
-
-count = 0
-while True and count < scroll_limit:
-    # Scroll down to bottom
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-    # Wait to load page
-    sleep(SCROLL_PAUSE_TIME)
-
-    # Calculate new scroll height and compare with last scroll height
-    new_height = driver.execute_script("return document.body.scrollHeight")
-    if new_height == last_height:
-        break
-    last_height = new_height
-    count += 1
-
-sleep(2) 
-
-html = driver.page_source
-soup = BeautifulSoup(html, 'lxml')
-homeurl = soup.find_all('span',attrs={'class':'code-mlk'})
+url = 'https://ap-api.melketabriz.com/api/v1/property?status_sell=614ed62da50555f0a54c1eca&status_property=614edc35a50555f0a54c1f12&category_property%5B%5D=614ee704a50555f0a54c227d&show_all=&page={}'
 homes = []
 urls = []
-for home in homeurl:
-    homes.append(home.get_text())
+for page in range(1,27):
+    response = requests.get(url.format(page)).json()
+    homes.extend(response['data'][i]['code'] for i in range(len(response['data'])))
 for code in homes:
-    c = homes[homes.index(code)]
-    c = c.strip('کد: ')
-    urls.append('https://melketabriz.com/p/%s'%c)
-del home
+    urls.append('https://melketabriz.com/p/%i'%code)
 main = []
 for lnk in urls:
-    del soup
     data = []
     soup = BeautifulSoup(requests.get(lnk).text,'html.parser')
     ex = soup.find_all('div',attrs={'class':'text-infmlk'})
