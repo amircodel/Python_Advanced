@@ -23,28 +23,31 @@ for lnk in urls:
     soup = BeautifulSoup(requests.get(lnk).text,'html.parser')
     ex = soup.find_all('div',attrs={'class':'text-infmlk'})
     data.extend([i.text for i in ex])
-    if len(ex) == 13:
-        data.pop(2)
-    # Code of notice data[0]
-    # Area data[1]
-    # Meterage data[2]
-    data[2] = float(data[2])
-    # Pricing data[3] & permeter data[4]
-    data[3] = int(''.join(re.findall(r'\d+',data[3])))
-    data.insert(4,int(data[3]//data[2]))
-    # floor data[5]
-    # Rooms data[6]
-    data[6] = int(data[6])
-    # Total floors data[7]
-    data[7] = int(data[7])
-    # Homes per one floor data[8]
-    data[8] = int(data[8])
-    # Buliding year data[9]
-    data[9] = int(re.findall(r'\d+',data[9])[0])
-    # Situation data[10]
-    # Type of building data[11]
-    # type of documentry data[12]
-    main.append(tuple(data))
+    try:
+        if len(ex) == 13:
+            data.pop(2)
+        # Code of notice data[0]
+        # Area data[1]
+        # Meterage data[2]
+        data[2] = float(data[2])
+        # Pricing data[3] & permeter data[4]
+        data[3] = int(''.join(re.findall(r'\d+',data[3])))
+        data.insert(4,int(data[3]//data[2]))
+        # floor data[5]
+        # Rooms data[6]
+        data[6] = int(data[6])
+        # Total floors data[7]
+        data[7] = int(data[7])
+        # Homes per one floor data[8]
+        data[8] = int(data[8])
+        # Buliding year data[9]
+        data[9] = int(re.findall(r'\d+',data[9])[0])
+        # Situation data[10]
+        # Type of building data[11]
+        # type of documentry data[12]
+        main.append(tuple(data))
+    except:
+        pass
 stmt = "SHOW TABLES LIKE 'melkehtabriz'"
 cursor.execute(stmt)
 isthere = cursor.fetchone()
