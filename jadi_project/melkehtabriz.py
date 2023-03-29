@@ -2,6 +2,8 @@ from bs4 import BeautifulSoup
 import requests
 import re
 import mysql.connector
+from datetime import datetime
+start_time = datetime.now()
 mydb = mysql.connector.connect(
   host="localhost",
   user="root",
@@ -15,8 +17,10 @@ urls = []
 for page in range(1,27):
     response = requests.get(url.format(page)).json()
     homes.extend(response['data'][i]['code'] for i in range(len(response['data'])))
+length = len(homes)
 for code in homes:
     urls.append('https://melketabriz.com/p/%i'%code)
+print('Please wait until receiving Data; This process will probably take %s minutes, However depends on your internet condition and the source server too'%(int(length*1.1190)//60))
 main = []
 for lnk in urls:
     data = []
@@ -61,3 +65,5 @@ for home in main:
         cursor.execute(f"DELETE FROM melkehtabriz WHERE Code LIKE '{home[0]}';")
     cursor.execute(f"INSERT INTO melkehtabriz (Code, Area, Meterage, Pricing, PPM, Floor, Rooms, Allfloors, HPF, old, Situation, TypeBuilding, TypeDocumentry) VALUES {home}")
 mydb.commit()
+end_time = datetime.now()
+print('Done, Duration: {}'.format(end_time - start_time))
