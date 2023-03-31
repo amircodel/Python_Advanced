@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import re
 import mysql.connector
+import time
 from datetime import datetime
 start_time = datetime.now()
 mydb = mysql.connector.connect(
@@ -11,6 +12,15 @@ mydb = mysql.connector.connect(
   database="python"
 )
 cursor = mydb.cursor()
+def loading():
+    bar = ['L','LO','LOA','LOAD','LOADI','LOADIN','LOADING','LOADING.','LOADING..','LOADING...']
+    i = 0
+    while i < len(bar):
+        print(bar[i % len(bar)], end="\r")
+        time.sleep(0.1)
+        i += 1
+    print('          ',end='\r')
+    time.sleep(0.1)
 url = 'https://ap-api.melketabriz.com/api/v1/property?status_sell=614ed62da50555f0a54c1eca&status_property=614edc35a50555f0a54c1f12&category_property%5B%5D=614ee704a50555f0a54c227d&show_all=&page={}'
 homes = []
 urls = []
@@ -21,8 +31,10 @@ length = len(homes)
 for code in homes:
     urls.append('https://melketabriz.com/p/%i'%code)
 print('Please wait until receiving Data; This process will probably take %s minutes, However depends on your internet condition and the source server too'%(int(length*1.1190)//60))
+print('\n')
 main = []
 for lnk in urls:
+    loading()
     data = []
     soup = BeautifulSoup(requests.get(lnk).text,'html.parser')
     ex = soup.find_all('div',attrs={'class':'text-infmlk'})
