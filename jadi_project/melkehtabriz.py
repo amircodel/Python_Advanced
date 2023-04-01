@@ -7,6 +7,7 @@ from datetime import datetime
 start_time = datetime.now()
 mydb = mysql.connector.connect(
   host="localhost",
+  port="3307",
   user="root",
   password="",
   database="python"
@@ -24,13 +25,12 @@ def loading():
 url = 'https://ap-api.melketabriz.com/api/v1/property?status_sell=614ed62da50555f0a54c1eca&status_property=614edc35a50555f0a54c1f12&category_property%5B%5D=614ee704a50555f0a54c227d&show_all=&page={}'
 homes = []
 urls = []
-for page in range(1,27):
-    response = requests.get(url.format(page)).json()
-    homes.extend(response['data'][i]['code'] for i in range(len(response['data'])))
-length = len(homes)
+for page in range(1,30):
+        response = requests.get(url.format(page)).json()
+        if 'data' in response:
+            homes.extend(response['data'][i] for i in range(len(response['data'])))
 for code in homes:
-    urls.append('https://melketabriz.com/p/%i'%code)
-print('Please wait until receiving Data; This process will probably take %s minutes, However depends on your internet condition and the source server too'%(int(length*1.1190)//60))
+    urls.append('https://melketabriz.com/p/%s'%code)
 print('\n')
 main = []
 for lnk in urls:
