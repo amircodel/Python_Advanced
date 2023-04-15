@@ -1,28 +1,18 @@
 import discord
-from discord.ext import commands
+from discord import app_commands
+import re
+
 intents = discord.Intents.default()
-intents.members = True
+client = discord.Client(intents=intents)
+tree = app_commands.CommandTree(client)
 
 que = "بـــــابـــــای تـــــو کــــــیـــــه ؟"
 
-bot = commands.Bot(command_prefix='/', case_insensitive=True, intents=intents)
-
-@bot.event
+@tree.command(name = "papa", description = "generate ComixZone funny and stereotypy Farsi question") #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
+async def papa_command(interaction ,user : discord.User):
+    await interaction.response.send_message(f'{re.sub(r'\s+\#d+',r'\@\s+',user)} {que}')
+@client.event
 async def on_ready():
-    print(f'Logged in as {bot.user.name}')
-
-# Customize a command
-@bot.command(name='papa', help='Can generate a funny and stereotypy Farsi question')
-# @commands.cooldown(1, 5, commands.BucketType.user)
-async def papa_command(ctx, name : str):
-    await ctx.send(f'{name} {que}')
-
-# Add papa command if it not exists
-if not bot.get_command('papa'):
-    bot.add_command(papa_command)
-
-# Enable command auto-complete suggestion feature in Discord
-bot.remove_command('help')
-bot.load_extension("jishaku")
-
-bot.run('MTA5NTA0NDY4Mjg0Njg0MzA2MQ.GGQ2bW.UqS9kUQxh55X4bem3iXosg0E8n_QHaPbGqVwLs')
+    await tree.sync()
+    print("Ready!")
+client.run('MTA5NTA0NDY4Mjg0Njg0MzA2MQ.GGQ2bW.UqS9kUQxh55X4bem3iXosg0E8n_QHaPbGqVwLs')
