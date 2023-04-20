@@ -1,6 +1,5 @@
 import discord
 from discord import app_commands
-from typing import Optional
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
@@ -9,9 +8,9 @@ tree = app_commands.CommandTree(client)
 que = "بـــــابـــــای تـــــو کــــــیـــــه؟ "
 
 @tree.command(name = "papa", description = "generate ComixZone funny and stereotypy Farsi question") #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
-async def papa_command(interaction ,user: discord.User ,emoji: Optional[discord.Emoji]):
+async def papa_command(interaction ,user: discord.User):
     user = user.mention
-    await interaction.response.send_message(f'{user} {que} {emoji}')
+    await interaction.response.send_message(f'{user} {que}')
 @client.event
 async def on_ready():
     await tree.sync()
