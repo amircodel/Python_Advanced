@@ -2,6 +2,7 @@
 # پروژه مدیریت لیگ فوتبال
 # درس برنامه سازی پیشرفته استاد ترحیب
 
+
 # وارد کردن کتابخانه ها در پروژه
 
 import tkinter as tk
@@ -47,6 +48,7 @@ root = tk.Tk()
 root.title("مدیریت لیـــگ فوتبال")
 root.geometry('1000x930')
 root.geometry("+150+25")
+root.iconbitmap("app.ico")
 root.configure(bg=Main_BG)
 root.resizable(False, False)
 
@@ -171,6 +173,7 @@ def add_drop_team():
     tl.title("اضافه یا حذف تیم")
     tl.geometry('500x250')
     tl.geometry("+350+100")
+    tl.iconbitmap("app.ico")
     tl.configure(bg=Main_BG)
     tl.resizable(False, False)
 
@@ -256,6 +259,7 @@ def match():
     tl.title("ثبت نتیجه یک تقابل")
     tl.geometry('500x450')
     tl.geometry("+350+100")
+    tl.iconbitmap("app.ico")
     tl.configure(bg=Main_BG)
     tl.resizable(False, False)
 
@@ -474,6 +478,7 @@ label.pack()
 # نگه داشتن صفحه اصلی برنامه
 
 root.mainloop()
+
 
 # امیرعلی محمدی (4011833239)
 # پروژه مدیریت لیگ فوتبال
