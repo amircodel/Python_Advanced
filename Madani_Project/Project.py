@@ -137,7 +137,7 @@ def reset_table():
 
 # تعریف تابع مرتب کردن به ترتیب اولویت عناوین جدول لیگ
 
-def order_table():
+def sort_table():
     global data
 
     # به ترتیب بیشترین امتیاز، بیشترین تفاضل گل، بیشترین برد، کمترین باخت، حروف الفبا
@@ -164,6 +164,9 @@ def drop_table():
 # تعریف تابع عملیات افزودن یا حذف تیم
 
 def add_drop_team():
+
+    # ساختن یک زیرصفحه برای عملیات افزودن یا حذف تیم
+
     tl = tk.Toplevel(root)
     tl.title("اضافه یا حذف تیم")
     tl.geometry('500x250')
@@ -187,21 +190,21 @@ def add_drop_team():
     header1 = tk.Label(tlframe2, text='افزودن تیـم', fg='black', font=(Main_font1, 16 ,'bold', "underline"), justify='center', bg=Main_BG)
     header1.pack(pady=20,padx=50)
 
-    # تعریف تابع افزودن یک تیم به لیست تیم
+    # تعریف تابع افزودن یک تیم به لیست تیم و جدول لیگ
 
     def save_team():
         global team, data
-        team.append(entry1.get())
-        data.append([0, 0, 0, 0, 0, 0, 0, 0, entry1.get(),0])
-        entry1.delete(0, tk.END)
+        team.append(entry.get())
+        data.append([0, 0, 0, 0, 0, 0, 0, 0, entry.get(),0])
+        entry.delete(0, tk.END)
         reset_table()
-        order_table()
+        sort_table()
         table = create_table(frame1,data=data,headers=headers)
         update_option_menu()
 
 
-    entry1 = ttk.Entry(tlframe2,style="CustomEntry.TEntry",font=(Main_font2, 12),width=15,justify='center')
-    entry1.pack(pady=20)
+    entry = ttk.Entry(tlframe2,style="CustomEntry.TEntry",font=(Main_font2, 12),width=15,justify='center')
+    entry.pack(pady=20)
 
     button1 = ttk.Button(tlframe2, text="ثبـــت", command=save_team, style="CustomButton2.TButton")
     button1.pack(pady=5)
@@ -229,7 +232,7 @@ def add_drop_team():
                 data.remove(d)
         option_var.set("")
         reset_table()
-        order_table()
+        sort_table()
         table = create_table(frame1,data=data,headers=headers)
         update_option_menu()
 
@@ -245,6 +248,9 @@ def add_drop_team():
 # تعریف تابع ثبت نتایج مسابقات
 
 def match():
+
+    # ساختن یک زیرصفحه برای ثبت نتایج مسابقات
+
     global entry_a, entry_b
     tl = tk.Toplevel(root)
     tl.title("ثبت نتیجه یک تقابل")
@@ -346,7 +352,7 @@ def match():
 
 
         reset_table()
-        order_table()
+        sort_table()
         table = create_table(frame1,data=data,headers=headers)
         option_var1.set("")
         option_var2.set("")
@@ -468,7 +474,6 @@ label.pack()
 # نگه داشتن صفحه اصلی برنامه
 
 root.mainloop()
-
 
 # امیرعلی محمدی (4011833239)
 # پروژه مدیریت لیگ فوتبال
