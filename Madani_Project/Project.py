@@ -9,7 +9,6 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from tkinter import *
-from PIL import ImageTk, Image
 import mysql.connector
 
 # راه اندازی دیتابیس
@@ -46,9 +45,8 @@ Main_font2 = "MRT_Liner XL"
 
 root = tk.Tk()
 root.title("مدیریت لیـــگ فوتبال")
-root.geometry('1000x930')
-root.geometry("+150+25")
-root.iconbitmap("app.ico")
+root.geometry('1000x650')
+root.geometry("+100+10")
 root.configure(bg=Main_BG)
 root.resizable(False, False)
 
@@ -71,7 +69,7 @@ frame1.pack(side=tk.LEFT, fill=tk.Y, padx=50)
 
 frame2 = ttk.Frame(root)
 frame2.configure(style="CustomFrame1.TFrame")
-frame2.pack(side=tk.RIGHT, fill=tk.Y, expand=False, padx=20, pady=80)
+frame2.pack(side=tk.RIGHT, fill=tk.Y, expand=False, padx=20, pady=40)
 
 
 # تعریف تابع جدول سازی طبق داده های لیست دیتا
@@ -173,7 +171,6 @@ def add_drop_team():
     tl.title("اضافه یا حذف تیم")
     tl.geometry('500x250')
     tl.geometry("+350+100")
-    tl.iconbitmap("app.ico")
     tl.configure(bg=Main_BG)
     tl.resizable(False, False)
 
@@ -259,7 +256,6 @@ def match():
     tl.title("ثبت نتیجه یک تقابل")
     tl.geometry('500x450')
     tl.geometry("+350+100")
-    tl.iconbitmap("app.ico")
     tl.configure(bg=Main_BG)
     tl.resizable(False, False)
 
@@ -466,14 +462,6 @@ button6.pack(pady=10)
 
 space = tk.Label(frame2, text="", pady=10, bg=Main_BG)
 space.pack()
-
-# تعریف تصویر برنامه
-
-image = Image.open("ball.png")
-image = image.resize((215, 215))
-img = ImageTk.PhotoImage(image)
-label = tk.Label(frame2,image=img, background=Main_BG)
-label.pack()
 
 # نگه داشتن صفحه اصلی برنامه
 
