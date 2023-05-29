@@ -15,11 +15,42 @@ import mysql.connector
 
 mydb = mysql.connector.connect(
   host="localhost",
-  port="3306",
+  port="3306", # پورت
   user="root",
-  password="",
-  database="manage_league"
+  password="", # رمز عبور دیتابیس
+  database="manage_league" # نام دیتابیس
 ) 
+
+cursor = mydb.cursor()
+
+
+# لیست هدرس حاوی عناوین ستون ها
+
+headers = ('امتیاز', 'ت.گ', 'گ.خ', 'گ.ز', 'باخت', 'تساوی', 'برد', 'بازی', 'تیم', 'رتبه')
+
+# بررسی و ایجاد جدول لیگ در دیتابیس
+
+sel_query = "SHOW TABLES LIKE 'league1'"
+cursor.execute(sel_query)
+isthere = cursor.fetchone()
+if not isthere:
+    create_query ='''
+        CREATE TABLE league1 (
+            `امتیاز` INT,
+            `ت.گ` INT,
+            `گ.خ` INT,
+            `گ.ز` INT,
+            `باخت` INT,
+            `تساوی` INT,
+            `برد` INT,
+            `بازی` INT,
+            `تیم` VARCHAR(255),
+            `رتبه` INT
+        );
+    '''
+
+    cursor.execute(create_query)
+
 
 # تعریف کردن لیست حاوی جدول و نام تیم ها
 
@@ -28,7 +59,6 @@ team = ['']
 
 # دریافت جدول از دیتابیس و وارد کردن اطلاعات به برنامه
 
-cursor = mydb.cursor()
 get_query = "SELECT * FROM league1"
 cursor.execute(get_query)
 for row in cursor:
@@ -121,9 +151,6 @@ def create_table(root,data,headers):
                 label_list.append(e)
                 e.config(text=data[i][j])
 
-# لیست هدرس حاوی عناوین ستون ها
-
-headers = ('امتیاز', 'ت.گ', 'گ.خ', 'گ.ز', 'باخت', 'تساوی', 'برد', 'بازی', 'تیم', 'رتبه')
 
 # ایجاد جدول اولیه
 
