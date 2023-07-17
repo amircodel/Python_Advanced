@@ -1,9 +1,9 @@
-list = []
+lst = []
 counter= []
 for i in range(10):
     num = int(input())
-    list.append(num)
-list = sorted(list, reverse= True)
+    lst.append(num)
+lst = sorted(lst, reverse= True)
 def prime(n):
     if n > 1:
         for i in range(2,n):
@@ -27,12 +27,12 @@ def magavall(handel,z):
         counter.append(c)
     else:
         return c
-for l in list:
+for l in lst:
     magavall(l,0)
-for k in list:
+for k in lst:
     if magavall(k,1) == max(counter):
-        if k == max(list):
+        if k == max(lst):
             print("%i %i" %(k,max(counter)))
             break
     else:
-        list[list.index(k)] = -1
+        lst[lst.index(k)] = -1
