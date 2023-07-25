@@ -7,7 +7,7 @@ from datetime import datetime
 start_time = datetime.now()
 mydb = mysql.connector.connect(
   host="localhost",
-  port="3307",
+  port="3306",
   user="root",
   password="",
   database="python"
@@ -22,13 +22,16 @@ def loading():
         i += 1
     print('          ',end='\r')
     time.sleep(0.1)
-url = 'https://ap-api.melketabriz.com/api/v1/property?status_sell=614ed62da50555f0a54c1eca&status_property=614edc35a50555f0a54c1f12&category_property%5B%5D=614ee704a50555f0a54c227d&show_all=&page={}'
+url = 'https://ap-api.melketabriz.ir/api/v1/property?status_sell=614ed62da50555f0a54c1eca&status_property=614edc35a50555f0a54c1f12&category_property=614ee704a50555f0a54c227d&page={}&limit=100&sort=-updatedAt'
 homes = []
 urls = []
-for page in range(1,30):
+try:
+    for page in range(1,21):
         response = requests.get(url.format(page)).json()
-        if 'data' in response:
-            homes.extend(response['data'][i] for i in range(len(response['data'])))
+        for i in range(100):
+            homes.append(response['data'][i]['code'])
+except:
+    pass
 for code in homes:
     urls.append('https://melketabriz.com/p/%s'%code)
 print('\n')
