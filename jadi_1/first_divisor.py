@@ -13,7 +13,7 @@ def prime(n):
             return True
     else:
         return False
-def magavall(handel,z):
+def first_divisor(handel,z):
     global counter
     c = 0
     for i in range(handel + 1):
@@ -28,9 +28,9 @@ def magavall(handel,z):
     else:
         return c
 for l in lst:
-    magavall(l,0)
+    first_divisor(l,0)
 for k in lst:
-    if magavall(k,1) == max(counter):
+    if first_divisor(k,1) == max(counter):
         if k == max(lst):
             print("%i %i" %(k,max(counter)))
             break
